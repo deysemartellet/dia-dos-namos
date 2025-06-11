@@ -6,7 +6,6 @@ const config = {
   backgroundColor: '#000',
   pixelArt: true,
   roundPixels: true,
-  parent: 'gameCanvas',
 
   physics: {
     default: 'arcade',
