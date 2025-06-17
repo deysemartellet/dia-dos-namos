@@ -99,7 +99,7 @@ class Level1Scene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Contador de corações
-    this.heartCounter = this.add.text(20, 40, 'Corações: 0/5', {
+    this.heartCounter = this.add.text(20, 40, `Corações: ${gameData.heartsCollected}/5`, {
       fontSize: '10px',
       fill: '#fff',
       fontFamily: 'Arial'
@@ -318,3 +318,4 @@ let gameData = {
   currentLevel: 1,
   sounds: {}
 };
+
