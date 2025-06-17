@@ -83,6 +83,7 @@ class Level1Scene extends Phaser.Scene {
   }
 
   create() {
+    console.log("Level1Scene created. heartsCollected:", gameData.heartsCollected);
     // Reset dos dados do nível
     gameData.heartsCollected = 0;
     
@@ -99,7 +100,7 @@ class Level1Scene extends Phaser.Scene {
     }).setOrigin(0.5);
 
     // Contador de corações
-    this.heartCounter = this.add.text(20, 40, 'Corações: 0/5', {
+    this.heartCounter = this.add.text(20, 40, `Corações: ${gameData.heartsCollected}/5`, {
       fontSize: '10px',
       fill: '#fff',
       fontFamily: 'Arial'
@@ -112,37 +113,45 @@ class Level1Scene extends Phaser.Scene {
     this.platforms.create(240, 140, null).setSize(60, 20).setVisible(false); // Plataforma direita
 
     // Criar player
-    this.player = this.physics.add.sprite(50, 180, 'dudu1').setScale(0.15);
+    this.player = this.physics.add.sprite(50, 200, 'dudu1').setScale(0.15);
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
 
     // Física do player com plataformas
-    this.physics.add.collider(this.player, this.platforms);
-
-    // Criar grupo de corações
+    this.physics.add.collider(this.player, th    // Criar grupo de corações
     this.hearts = this.physics.add.group();
     
     // Posicionar 5 corações
     const heartPositions = [
-      { x: 100, y: 100 },
-      { x: 200, y: 60 },
-      { x: 280, y: 100 },
-      { x: 150, y: 140 },
-      { x: 60, y: 140 }
+      { x: 100, y: 50 },
+      { x: 200, y: 10 },
+      { x: 280, y: 50 },
+      { x: 150, y: 90 },
+      { x: 60, y: 90 }
     ];
 
     heartPositions.forEach(pos => {
       const heart = this.hearts.create(pos.x, pos.y, 'heart').setScale(1.5);
       heart.setBounce(0.3);
+      heart.body.enable = false; // Desativar o corpo físico inicialmente
     });
 
     // Física dos corações com plataformas
     this.physics.add.collider(this.hearts, this.platforms);
 
     // Colisão player com corações
-    this.physics.add.overlap(this.player, this.hearts, this.collectHeart, null, this);
+    this.heartCollider = this.physics.add.overlap(this.player, this.hearts, this.collectHeart, null, this);
+    this.heartCollider.active = false; // Desativar a colisão inicialmente
 
-    // Controles
+    // Ativar os corpos físicos dos corações e a colisão após um pequeno atraso
+    this.time.delayedCall(500, () => {
+      this.hearts.children.each(heart => {
+        if (heart.body) {
+          heart.body.enable = true;
+        }
+      });
+      this.heartCollider.active = true;
+    });// Controles
     this.cursors = this.input.keyboard.createCursorKeys();
 
     // Animação do personagem (simples alternância)
@@ -178,6 +187,7 @@ class Level1Scene extends Phaser.Scene {
   }
 
   collectHeart(player, heart) {
+    console.log("Heart collected! Current hearts:", gameData.heartsCollected);
     heart.destroy();
     gameData.heartsCollected++;
     
@@ -302,7 +312,7 @@ const config = {
     default: 'arcade',
     arcade: {
       gravity: { y: 300 }, // Gravidade para plataforma
-      debug: false
+      debug: true
     }
   },
   scene: [StartScene, Level1Scene, Level2Scene, FinalScene]
@@ -318,3 +328,4 @@ let gameData = {
   currentLevel: 1,
   sounds: {}
 };
+
