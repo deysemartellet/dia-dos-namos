@@ -112,7 +112,7 @@ class Level1Scene extends Phaser.Scene {
     this.platforms.create(240, 140, null).setSize(60, 20).setVisible(false); // Plataforma direita
 
     // Criar player
-    this.player = this.physics.add.sprite(50, 180, 'dudu1').setScale(0.15);
+    this.player = this.physics.add.sprite(50, 200, 'dudu1').setScale(0.15);
     this.player.setBounce(0.2);
     this.player.setCollideWorldBounds(true);
 
