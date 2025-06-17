@@ -124,11 +124,11 @@ class Level1Scene extends Phaser.Scene {
     
     // Posicionar 5 corações
     const heartPositions = [
-      { x: 100, y: 100 },
-      { x: 200, y: 60 },
-      { x: 280, y: 100 },
-      { x: 150, y: 140 },
-      { x: 60, y: 140 }
+      { x: 100, y: 50 },
+      { x: 200, y: 10 },
+      { x: 280, y: 50 },
+      { x: 150, y: 90 },
+      { x: 60, y: 90 }
     ];
 
     heartPositions.forEach(pos => {
